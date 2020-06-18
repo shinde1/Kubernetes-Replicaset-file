@@ -1,0 +1,36 @@
+1.Create a replicaset file to create 3 pods of tomcat.
+
+vi replicaset.yml
+---
+apiVersion: apps/v1
+kind: ReplicSet
+metadata:
+  name: tomcat-resplicaset
+  labels:
+     author: xyz
+     type: webserver
+spec:
+  replicas: 3
+  selector:
+     matchLables:
+        type: webserver
+  template:
+     metadata: 
+        name: tomcat-pod
+	lables:
+	  type: webserver
+     spec:
+        container:
+	  - name: mytomcat
+	    image: tomcat
+	    ports:
+	     - containerPort: 8080
+	       hostPort: 9090
+...
+
+kubectl create -f replicaset.yml
+kubectl get pods -o wide
+kubectl delete -f replicaset.yml
+
+
+
